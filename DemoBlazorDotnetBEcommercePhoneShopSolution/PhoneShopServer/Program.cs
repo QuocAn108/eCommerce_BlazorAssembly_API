@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using PhoneShopServer.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +11,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Starting
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDB")?? throw new InvalidOperationException("Connection String not found"));
+});
+//Ending
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
