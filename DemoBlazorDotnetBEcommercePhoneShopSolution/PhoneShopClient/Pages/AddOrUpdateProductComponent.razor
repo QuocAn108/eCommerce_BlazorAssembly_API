@@ -1,0 +1,98 @@
+﻿@page "/add-product"
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <EditForm Model="MyProduct" Enhance OnValidSubmit="HandleSaveProduct">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="card">
+                    <div class="card-header">Add Product</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <InputText @bind-Value="MyProduct.Name" class="form-control"></InputText>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label">Price</label>
+                            <InputNumber @bind-Value="MyProduct.Price" class="form-control"></InputNumber>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label">Quantity</label>
+                            <InputNumber @bind-Value="MyProduct.Quantity" class="form-control"></InputNumber>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label">Description</label>
+                            <InputTextArea @bind-Value="MyProduct.Description" class="form-control"></InputTextArea>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label @(ImageUploadMessage == ""?"":"Text-danger")">
+                                @(ImageUploadMessage == "" ? "Upload Image" : ImageUploadMessage)
+                            </label>
+                            <InputFile OnChange="UploadImage" class="form-control"></InputFile>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="form-group mt-3">
+                            @if (ShowSaveButton)
+                            {
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="fa fa-plus"></i>Save Product
+                                </button>
+                            }
+                            <BusyButtonComponent ShowBusyButton="ShowBusyButton"></BusyButtonComponent>
+                        </div>
+
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+<MessageDialog @ref="messageDialog"></MessageDialog>
+@code {
+    Product MyProduct = new();
+    string ImageUploadMessage = "";
+    async Task HandleSaveProduct()
+    {
+        ShowSaveButton = false;
+        ShowBusyButton = !ShowSaveButton;
+        if (string.IsNullOrEmpty(MyProduct.Base64Img))
+        {
+            messageDialog!.SetDialogValues("Warning", "You need to choose Image");
+            SetMessageDialog();
+            return;
+        }
+        var (flag, message) = await productService.AddProduct(MyProduct);
+        if (flag) messageDialog!.SetDialogValues("Success", message);
+        else messageDialog!.SetDialogValues("Danger", message);
+
+    }
+    async Task UploadImage(InputFileChangeEventArgs e)
+    {
+        if (e.File.Name.ToLower().Contains(".png"))
+        {
+            var format = "image/png";
+            var resizedImage = await e.File.RequestImageFileAsync(format, 300, 300);
+            var buffer = new byte[resizedImage.Size];
+            await resizedImage.OpenReadStream().ReadAsync(buffer);
+            var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+            ImageUploadMessage = "";
+            MyProduct.Base64Img = imageData;
+            imageData = "";
+            return;
+        }
+        ImageUploadMessage = "Only PNG images are allowed";
+        return;
+    }
+    MessageDialog? messageDialog;
+    public bool ShowSaveButton { get; set; } = true;
+    public bool ShowBusyButton { get; set; }
+    private async void SetMessageDialog()
+    {
+        await messageDialog!.ShowMessage();
+        ShowBusyButton = false;
+        ShowSaveButton = !ShowBusyButton;
+        StateHasChanged();
+    }
+}
+
