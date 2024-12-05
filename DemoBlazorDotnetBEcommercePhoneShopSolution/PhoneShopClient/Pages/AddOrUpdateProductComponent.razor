@@ -32,19 +32,67 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-outline-primary">
-                            <i class="fa fa-plus"></i>Save Product
-                        </button>
+                        <div class="form-group mt-3">
+                            @if (ShowSaveButton)
+                            {
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="fa fa-plus"></i>Save Product
+                                </button>
+                            }
+                            <BusyButtonComponent ShowBusyButton="ShowBusyButton"></BusyButtonComponent>
+                        </div>
+
                     </div>
                 </div>
             </EditForm>
         </div>
     </div>
 </div>
+<MessageDialog @ref="messageDialog"></MessageDialog>
 @code {
     Product MyProduct = new();
+    string ImageUploadMessage = "";
     async Task HandleSaveProduct()
     {
+        ShowSaveButton = false;
+        ShowBusyButton = !ShowSaveButton;
+        if (string.IsNullOrEmpty(MyProduct.Base64Img))
+        {
+            messageDialog!.SetDialogValues("Warning", "You need to choose Image");
+            SetMessageDialog();
+            return;
+        }
+        var (flag, message) = await productService.AddProduct(MyProduct);
+        if (flag) messageDialog!.SetDialogValues("Success", message);
+        else messageDialog!.SetDialogValues("Danger", message);
 
     }
+    async Task UploadImage(InputFileChangeEventArgs e)
+    {
+        if (e.File.Name.ToLower().Contains(".png"))
+        {
+            var format = "image/png";
+            var resizedImage = await e.File.RequestImageFileAsync(format, 300, 300);
+            var buffer = new byte[resizedImage.Size];
+            await resizedImage.OpenReadStream().ReadAsync(buffer);
+            var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+            ImageUploadMessage = "";
+            MyProduct.Base64Img = imageData;
+            imageData = "";
+            return;
+        }
+        ImageUploadMessage = "Only PNG images are allowed";
+        return;
+    }
+    MessageDialog? messageDialog;
+    public bool ShowSaveButton { get; set; } = true;
+    public bool ShowBusyButton { get; set; }
+    private async void SetMessageDialog()
+    {
+        await messageDialog!.ShowMessage();
+        ShowBusyButton = false;
+        ShowSaveButton = !ShowBusyButton;
+        StateHasChanged();
+    }
 }
+
