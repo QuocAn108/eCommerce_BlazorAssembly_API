@@ -12,7 +12,7 @@ using PhoneShopServer.Data;
 namespace PhoneShopServer.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241127132626_DBInit")]
+    [Migration("20241205161713_DBInit")]
     partial class DBInit
     {
         /// <inheritdoc />
