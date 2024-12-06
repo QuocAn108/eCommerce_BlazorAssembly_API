@@ -62,7 +62,7 @@
             SetMessageDialog();
             return;
         }
-        var (flag, message) = await productService.AddProduct(MyProduct);
+        var (flag, message) = await ClientService.AddProductAsync(MyProduct);
         if (flag) messageDialog!.SetDialogValues("Success", message);
         else messageDialog!.SetDialogValues("Danger", message);
 
