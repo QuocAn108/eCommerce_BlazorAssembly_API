@@ -9,12 +9,12 @@ namespace PhoneShopClient.Services
     public class ClientServices(HttpClient httpClient) : IProduct
     {
         private const string BaseUrl = "api/product";
-        private static string serializedObj(object modelObj) => JsonSerializer.Serialize(modelObj, JsonOptions());
+        private static string SerializedObj(object modelObj) => JsonSerializer.Serialize(modelObj, JsonOptions());
         private static T DeserializeJsonString<T>(string jsonString) => JsonSerializer.Deserialize<T>(jsonString, JsonOptions())!;
-        private static StringContent GenerateStingContent(string serializedObj) => new(serializedObj, System.Text.Encoding.UTF8, "application/json");
+        private static StringContent GenerateStringContent(string serializedObj) => new(serializedObj, System.Text.Encoding.UTF8, "application/json");
         private static IList<T> DeserializeJsonStringList<T>(string jsonString) => JsonSerializer.Deserialize<IList<T>>(jsonString, JsonOptions())!;
         private static JsonSerializerOptions JsonOptions()
-        {
+        {   
             return new JsonSerializerOptions
             {
                 AllowTrailingCommas = true,
@@ -26,7 +26,7 @@ namespace PhoneShopClient.Services
 
         public async Task<ServiceResponse> AddProductAsync(Product product)
         {
-            var response = await httpClient.PostAsync(BaseUrl, GenerateStingContent(serializedObj(product)));
+            var response = await httpClient.PostAsync(BaseUrl, GenerateStringContent(SerializedObj(product)));
             if(!response.IsSuccessStatusCode)
                 return new ServiceResponse(false, "Error occured. Try again later...");
             var apiResponse = await response.Content.ReadAsStringAsync();
@@ -37,7 +37,7 @@ namespace PhoneShopClient.Services
         {
             var response = await httpClient.GetAsync($"{BaseUrl}?featured={featuredProducts}");
             if (!response.IsSuccessStatusCode)
-                return null;
+                return null!;
             var result = await response.Content.ReadAsStringAsync();
             return [.. DeserializeJsonStringList<Product>(result)];
         }
