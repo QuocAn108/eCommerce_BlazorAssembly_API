@@ -58,13 +58,15 @@
         ShowBusyButton = !ShowSaveButton;
         if (string.IsNullOrEmpty(MyProduct.Base64Img))
         {
-            messageDialog!.SetDialogValues("Warning", "You need to choose Image");
+            messageDialog!.SetDialogValues("warning", "You need to choose Image");
             SetMessageDialog();
             return;
         }
         var (flag, message) = await ClientService.AddProductAsync(MyProduct);
-        if (flag) messageDialog!.SetDialogValues("Success", message);
-        else messageDialog!.SetDialogValues("Danger", message);
+        if (flag) messageDialog!.SetDialogValues("success", message);
+        else messageDialog!.SetDialogValues("danger", message);
+        SetMessageDialog();
+        return;
 
     }
     async Task UploadImage(InputFileChangeEventArgs e)
