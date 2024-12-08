@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PhoneShopServer.Data;
+using PhoneShopServer.Repositories;
+using PhoneShopShareLibrary.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +16,10 @@ builder.Services.AddSwaggerGen();
 //Starting
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDB")?? throw new InvalidOperationException("Connection String not found"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDB") ?? throw new InvalidOperationException("Connection String not found"));
 });
 //Ending
+builder.Services.AddScoped<IProduct, ProductRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
