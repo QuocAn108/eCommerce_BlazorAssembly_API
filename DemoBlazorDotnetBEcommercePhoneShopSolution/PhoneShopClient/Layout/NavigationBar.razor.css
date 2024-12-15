@@ -1,9 +1,9 @@
-﻿@font-face{
+﻿@font-face {
     font-family: 'MyFont';
-    src: url('../Fonts/Vermin Vibes.ttf');
+    src: url('../Fonts/VerminVibes.ttf');
 }
 
-#topbar{
+#topbar {
     font-family: 'MyFont';
     text-align: center;
 }
