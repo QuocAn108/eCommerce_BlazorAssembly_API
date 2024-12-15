@@ -1,0 +1,33 @@
+﻿<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <hr/>
+            <span style="font-family:MyFont">Featured</span>
+            <div class="card border-0">
+                <div class="card-body">
+                    <div class="d-flex justify-content-evenly align-items-center">
+                        <img src="../Resources/lessthan.png" width="50" height="50" id="styleCursor" @onclick="PreviousButton" />
+                        @if (FeaturedProducts is null) return;
+                        @foreach (var item in FeaturedProducts)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    @if (item.DateUploaded <DateTime.Now)
+                                    {
+                                        <span class="badge bg-primary d-flex align-items-end float-end" style="width:50px">New</span>
+                                    } 
+                                    else{
+                                        <span class="badge bg-none d-flex align-items-end float-end" style="width:50px; height:"></span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+
+}
