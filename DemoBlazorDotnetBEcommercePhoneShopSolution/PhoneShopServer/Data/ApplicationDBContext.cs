@@ -10,5 +10,7 @@ namespace PhoneShopServer.Data
             
         }
         public DbSet<Product> Products { get; set; } = default!;
+        public DbSet<Category> Categories { get; set; } = default!;
+
     }
 }

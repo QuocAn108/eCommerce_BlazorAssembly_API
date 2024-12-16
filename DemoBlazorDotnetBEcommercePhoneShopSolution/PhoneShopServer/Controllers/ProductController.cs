@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PhoneShopShareLibrary.Interface;
+using PhoneShopServer.Repositories;
 using PhoneShopShareLibrary.Models;
 
 namespace PhoneShopServer.Controllers
