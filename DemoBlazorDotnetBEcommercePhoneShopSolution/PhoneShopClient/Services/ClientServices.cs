@@ -1,12 +1,11 @@
-﻿using PhoneShopShareLibrary.Interface;
-using PhoneShopShareLibrary.Models;
+﻿using PhoneShopShareLibrary.Models;
 using PhoneShopShareLibrary.Responses;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PhoneShopClient.Services
 {
-    public class ClientServices(HttpClient httpClient) : IProduct
+    public class ClientServices(HttpClient httpClient) : IProductService
     {
         private const string BaseUrl = "api/product";
         private static string SerializedObj(object modelObj) => JsonSerializer.Serialize(modelObj, JsonOptions());
