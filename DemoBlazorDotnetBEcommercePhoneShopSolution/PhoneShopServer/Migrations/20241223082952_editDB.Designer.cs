@@ -12,8 +12,13 @@ using PhoneShopServer.Data;
 namespace PhoneShopServer.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
+<<<<<<<< HEAD:DemoBlazorDotnetBEcommercePhoneShopSolution/PhoneShopServer/Migrations/20241223082952_editDB.Designer.cs
+    [Migration("20241223082952_editDB")]
+    partial class editDB
+========
     [Migration("20241205161713_DBInit")]
     partial class DBInit
+>>>>>>>> ccb03376e76baa3834c31969cac71878f0143535:DemoBlazorDotnetBEcommercePhoneShopSolution/PhoneShopServer/Migrations/20241205161713_DBInit.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +29,22 @@ namespace PhoneShopServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("PhoneShopShareLibrary.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
 
             modelBuilder.Entity("PhoneShopShareLibrary.Models.Product", b =>
                 {
@@ -36,6 +57,9 @@ namespace PhoneShopServer.Migrations
                     b.Property<string>("Base64Img")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateUploaded")
                         .HasColumnType("datetime2");
@@ -59,7 +83,23 @@ namespace PhoneShopServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("PhoneShopShareLibrary.Models.Product", b =>
+                {
+                    b.HasOne("PhoneShopShareLibrary.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("PhoneShopShareLibrary.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
