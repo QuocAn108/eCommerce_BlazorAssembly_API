@@ -26,8 +26,8 @@ namespace PhoneShopServer.Repositories
 
         private async Task<ServiceResponse> CheckNameAsync(string name)
         {
-            var categories = await _dbContext.Categories.FirstOrDefaultAsync(x => x.Name!.ToLower()!.Equals(name.ToLower()));
-            return categories is null ? new ServiceResponse(true, null!) : new ServiceResponse(false, "Categories is already exist");
+            var category = await _dbContext.Categories.FirstOrDefaultAsync(x => x.Name!.ToLower()!.Equals(name.ToLower()));
+            return category is null ? new ServiceResponse(true, null!) : new ServiceResponse(false, "Category is already exist");
         }
         private async Task Commit() => await _dbContext.SaveChangesAsync();
     }
