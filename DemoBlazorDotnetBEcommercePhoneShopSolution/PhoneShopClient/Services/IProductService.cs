@@ -1,9 +1,9 @@
 ﻿using PhoneShopShareLibrary.Models;
 using PhoneShopShareLibrary.Responses;
 
-namespace PhoneShopShareLibrary.Interface
+namespace PhoneShopClient.Services
 {
-    public interface IProduct
+    public interface IProductService
     {
         Task<ServiceResponse> AddProductAsync(Product product);
         Task<List<Product>> GetAllProductsAsync(bool featuredProducts);

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhoneShopServer.Data;
-using PhoneShopShareLibrary.Interface;
 using PhoneShopShareLibrary.Models;
 using PhoneShopShareLibrary.Responses;
 

@@ -30,6 +30,5 @@ namespace PhoneShopServer.Repositories
             return category is null ? new ServiceResponse(true, null!) : new ServiceResponse(false, "Category is already exist");
         }
         private async Task Commit() => await _dbContext.SaveChangesAsync();
-
     }
 }
