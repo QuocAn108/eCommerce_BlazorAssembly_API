@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\CategoriesPages\" />
     <Folder Include="wwwroot\Resources\" />
   </ItemGroup>
 
