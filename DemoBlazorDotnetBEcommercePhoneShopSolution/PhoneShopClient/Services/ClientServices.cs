@@ -1,12 +1,13 @@
 ﻿using PhoneShopShareLibrary.Models;
 using PhoneShopShareLibrary.Responses;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PhoneShopClient.Services
 {
     public class ClientServices(HttpClient httpClient) : IProductService, ICategoryService
     {
-        private const string ProductBaseUrl = "api/product";
-        private const string CategoryBaseUrl = "api/category";
+        private const string ProductBaseUrl = "api/Product";
+        private const string CategoryBaseUrl = "api/Category";
 
         public Action? CategoryAction { get; set; }
         public List<Category> AllCategories { get; set; }
@@ -25,8 +26,10 @@ namespace PhoneShopClient.Services
             if (!result.flag) return result;
 
             var apiResponse = await ReadContent(response);
+            var data = General.DeserializeJsonString<ServiceResponse>(apiResponse);
+            if (!data.flag) return data;
             await ClearAndGetAllProduct();
-            return General.DeserializeJsonString<ServiceResponse>(apiResponse);
+            return data;
         }
 
         private async Task ClearAndGetAllProduct()
@@ -78,8 +81,11 @@ namespace PhoneShopClient.Services
             if (!result.flag) return result;
 
             var apiResponse = await ReadContent(response);
+
+            var data = General.DeserializeJsonString<ServiceResponse>(apiResponse);
+            if (!data.flag) return data;
             await ClearAndGetAllCategory();
-            return General.DeserializeJsonString<ServiceResponse>(apiResponse);
+            return data;
         }
 
         public async Task GetAllCategoriesAsync()
@@ -101,7 +107,7 @@ namespace PhoneShopClient.Services
             await GetAllCategoriesAsync();
         }
         //General method
-        private async Task<String> ReadContent(HttpResponseMessage response) => await response.Content.ReadAsStringAsync();
+        private async Task<string> ReadContent(HttpResponseMessage response) => await response.Content.ReadAsStringAsync();
 
         private ServiceResponse CheckResponse(HttpResponseMessage response)
         {
