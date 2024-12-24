@@ -11,6 +11,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<IProductService,ClientServices>();
 builder.Services.AddScoped<ICategoryService, ClientServices>();
+builder.Services.AddScoped<MessageDialogService>();
 builder.Services.AddSyncfusionBlazor();
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzYxMzc4OUAzMjM3MmUzMDJlMzBkdDhCWlhmd05RbWE0NG5aSkNxKy9HNFZFYWN3RGJLSVVydko4Q2dqaFp3PQ==");
 await builder.Build().RunAsync();
