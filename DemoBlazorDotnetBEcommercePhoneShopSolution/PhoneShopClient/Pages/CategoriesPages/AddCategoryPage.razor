@@ -27,9 +27,13 @@
         </div>
     </div>
 </div>
-
+<MessageDialog @ref=messageDialogService.messageDialog></MessageDialog>
 @code {
     Category CategoryModel = new();
+    protected override void OnInitialized()
+    {
+        messageDialogService.Action += StateHasChanged;
+    }
     async Task HandleSaveCategory()
     {
         messageDialogService.ShowSaveButton = false;
@@ -40,6 +44,11 @@
         else
             messageDialogService.messageDialog!.SetDialogValues("danger", message);
         messageDialogService.SetMessageDialog();
-        return; 
+        return;
+    }
+
+    public void Dispose()
+    {
+        messageDialogService.Action -= StateHasChanged;
     }
 }
