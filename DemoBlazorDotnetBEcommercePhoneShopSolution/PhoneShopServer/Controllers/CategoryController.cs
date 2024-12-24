@@ -7,13 +7,10 @@ namespace PhoneShopServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController(ICategory categoryService) : ControllerBase
     {
-        private readonly ICategory _categoryService;
-        public CategoryController(ICategory categoryService)
-        {
-            _categoryService = categoryService;
-        }
+        private readonly ICategory _categoryService = categoryService;
+
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
