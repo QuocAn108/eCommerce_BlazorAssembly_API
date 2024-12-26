@@ -13,6 +13,18 @@
                             <label class="form-label">Name</label>
                             <InputText @bind-Value="MyProduct.Name" class="form-control"></InputText>
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">Select Category</label>
+                            @if(CategoryService.AllCategories is not null){
+                                <InputSelect class="form-select form-control-sm" @bind-Value="@MyProduct.CategoryId">
+                                    <option selected>Select Category</option>
+                                    @foreach (var category in CategoryService.AllCategories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                </InputSelect>
+                            }
+                        </div>
                         <div class="form-group mt-3">
                             <label class="form-label">Price</label>
                             <InputNumber @bind-Value="MyProduct.Price" class="form-control"></InputNumber>
@@ -56,7 +68,11 @@
     protected override async void OnInitialized()
     {
         await CategoryService.GetAllCategoriesAsync();
-        // CategoryService.CategoryAction += StateHasChanged;
+        if (CategoryService.AllCategories != null)
+        {
+            Console.WriteLine(CategoryService.AllCategories.ToString());
+        }
+        CategoryService.CategoryAction += StateHasChanged;
         messageDialogService.Action += StateHasChanged;
     }
     async Task HandleSaveProduct()
@@ -98,7 +114,7 @@
 
     public void Dispose()
     {
-        // CategoryService.CategoryAction -= StateHasChanged;
+        CategoryService.CategoryAction -= StateHasChanged;
         messageDialogService.Action -= StateHasChanged;
     }
 }

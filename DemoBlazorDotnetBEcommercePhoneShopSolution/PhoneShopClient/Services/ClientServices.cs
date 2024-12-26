@@ -10,10 +10,10 @@ namespace PhoneShopClient.Services
         private const string CategoryBaseUrl = "api/Category";
 
         public Action? CategoryAction { get; set; }
-        public List<Category> AllCategories { get; set; }
+        public List<Category> AllCategories { get; set; } = new();
         public Action? ProductAction { get; set; }
-        public List<Product> AllProducts { get; set; }
-        public List<Product> FeaturedProducts { get; set; }
+        public List<Product> AllProducts { get; set; } = new();
+        public List<Product> FeaturedProducts { get; set; } = new();
 
 
         //product
@@ -90,7 +90,7 @@ namespace PhoneShopClient.Services
 
         public async Task GetAllCategoriesAsync()
         {
-            if (AllCategories != null)
+            if (AllCategories == null)
             {
                 var response = await httpClient.GetAsync($"{CategoryBaseUrl}");
                 var (flag, _) = CheckResponse(response);
