@@ -16,6 +16,7 @@
     private async void CategoryClickedEvent(int categoryId)
     {
         if (categoryId == 0) return;
+        await ProductService.GetProductsByCategory(categoryId);
     }
 
     async Task DefaultCategoryClickedEvent(){

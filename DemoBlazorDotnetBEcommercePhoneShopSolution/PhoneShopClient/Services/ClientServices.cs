@@ -62,7 +62,7 @@ namespace PhoneShopClient.Services
             }
 
         }
-        public async Task GetProductByCategory(int categoryId)
+        public async Task GetProductsByCategory(int categoryId)
         {
             bool featured = false;
             await GetAllProducts(featured);
