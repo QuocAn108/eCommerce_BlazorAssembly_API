@@ -10,5 +10,7 @@ namespace PhoneShopClient.Services
         Task GetAllProducts(bool featuredProducts);
         List<Product> AllProducts { get; set; }
         List<Product> FeaturedProducts { get; set; }
+        List<Product> ProductsByCategory { get; set; }
+        Task GetProductByCategory(int categoryId);
     }
 }
