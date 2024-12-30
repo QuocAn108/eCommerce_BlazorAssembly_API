@@ -73,7 +73,7 @@
     {
         FeaturedProductList?.Clear();
         bool featured = true;
-        await ProductService.GetAllProductsAsync(featured);
+        await ProductService.GetAllProducts(featured);
         FeaturedProductList = ProductService.FeaturedProducts;
     }
     string GetNewLabel(DateTime dateUploaded)

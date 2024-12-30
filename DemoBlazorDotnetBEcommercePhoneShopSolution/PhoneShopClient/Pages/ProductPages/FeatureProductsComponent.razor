@@ -75,7 +75,7 @@
     {
         ProductList?.Clear();
         bool featured = true;
-        await ProductService.GetAllProductsAsync(featured);
+        await ProductService.GetAllProducts(featured);
         var data = ProductService.FeaturedProducts;
         LoadData();
     }

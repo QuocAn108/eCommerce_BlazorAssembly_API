@@ -65,13 +65,10 @@
 @code {
     Product MyProduct = new();
     string ImageUploadMessage = "";
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        await CategoryService.GetAllCategoriesAsync();
-        if (CategoryService.AllCategories != null)
-        {
-            Console.WriteLine(CategoryService.AllCategories.ToString());
-        }
+        await CategoryService.GetAllCategories();
+        Console.WriteLine(CategoryService.AllCategories.Count);
         CategoryService.CategoryAction += StateHasChanged;
         messageDialogService.Action += StateHasChanged;
     }
@@ -85,7 +82,7 @@
             messageDialogService.SetMessageDialog();
             return;
         }
-        var (flag, message) = await ProductService.AddProductAsync(MyProduct);
+        var (flag, message) = await ProductService.AddProduct(MyProduct);
         if (flag)
             messageDialogService.messageDialog!.SetDialogValues("success", message);
         else
