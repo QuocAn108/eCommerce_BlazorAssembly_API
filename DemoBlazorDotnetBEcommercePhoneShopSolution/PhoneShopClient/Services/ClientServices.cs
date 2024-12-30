@@ -13,7 +13,8 @@ namespace PhoneShopClient.Services
         public List<Category> AllCategories { get; set; }
         public Action? ProductAction { get; set; }
         public List<Product> AllProducts { get; set; }
-        public List<Product> FeaturedProducts { get; set; } 
+        public List<Product> FeaturedProducts { get; set; }
+        public List<Product> ProductsByCategory { get; set; }
 
 
         //product
@@ -60,7 +61,13 @@ namespace PhoneShopClient.Services
                 }
             }
 
-
+        }
+        public async Task GetProductByCategory(int categoryId)
+        {
+            bool featured = false;
+            await GetAllProducts(featured);
+            ProductsByCategory = AllProducts.Where(p => p.CategoryId == categoryId).ToList();
+            ProductAction?.Invoke();
         }
         private async Task<List<Product>> GetProducts(bool featured)
         {
@@ -115,5 +122,7 @@ namespace PhoneShopClient.Services
                 return new ServiceResponse(false, "Error occured. Try again later...");
             else return new ServiceResponse(true, null!);
         }
+
+
     }
 }
