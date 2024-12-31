@@ -66,47 +66,50 @@
     }
 </style>
 @code {
-    List<Product>? ProductList = new();
-    protected override async Task OnInitializedAsync()
-    {
-        await RetrieveProducts();
-    }
-    private async Task RetrieveProducts()
-    {
-        ProductList?.Clear();
-        bool featured = true;
-        await ProductService.GetAllProductsAsync(featured);
-        var data = ProductService.FeaturedProducts;
-        LoadData();
-    }
     public int PageSize { get; set; } = 8;
     public int Skip { get; set; } = 0;
     public int Take { get; set; } = 8;
     List<Product> FeaturedProducts = new();
-    void LoadData()
+    protected override async Task OnInitializedAsync()
     {
-        var getData = ProductList!.Skip(Skip).Take(Take).ToList();
-        Skip += PageSize;
-        FeaturedProducts?.Clear();
-        foreach (var item in getData)
-            FeaturedProducts!.Add(item);
+        bool featured = true;
+        await ProductService.GetAllProducts(featured);
+        ProductService.ProductAction += StateHasChanged;
+        LoadData();
     }
-    void PreviousButton()
+    private async void LoadData()
+    {
+        var getData = await SkipAndTake(Skip, Take);
+        Skip += PageSize;
+        AddToFeaturedProducts(getData);
+    }
+
+    private async Task<List<Product>> SkipAndTake(int skip, int take) => ProductService.FeaturedProducts.Skip(skip).Take(take).ToList();
+
+    private void AddToFeaturedProducts(List<Product> data)
+    {
+        FeaturedProducts?.Clear();
+        FeaturedProducts = data;
+    }
+    private async void NextButton()
+    {
+        if (Skip > ProductService.FeaturedProducts.Count()) return;
+        var getNextProduct = await SkipAndTake(Skip, Take);
+        Skip += PageSize;
+        AddToFeaturedProducts(getNextProduct);
+    }
+
+    private async void PreviousButton()
     {
         if (Skip == 8) return;
-        var getNextProducts = ProductList!.Skip(Skip - (PageSize * 2)).Take(Take).ToList();
+        var getPreviousProduct = await SkipAndTake(Skip-(PageSize*2), Take);
         Skip -= PageSize;
-        FeaturedProducts?.Clear();
-        foreach (var item in getNextProducts)
-            FeaturedProducts!.Add(item);
+        AddToFeaturedProducts(getPreviousProduct);
     }
-    void NextButton()
+
+    public void Dispose()
     {
-        if (Skip > ProductList!.Count) return;
-        var getNextProducts = ProductList!.Skip(Skip).Take(Take).ToList();
-        Skip += PageSize;
-        FeaturedProducts?.Clear();
-        foreach (var item in getNextProducts)
-            FeaturedProducts!.Add(item);
+        ProductService.ProductAction -= StateHasChanged;
     }
+
 }
