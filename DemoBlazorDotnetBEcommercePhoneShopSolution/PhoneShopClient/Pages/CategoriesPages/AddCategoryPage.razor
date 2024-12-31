@@ -39,7 +39,7 @@
     {
         messageDialogService.ShowSaveButton = false;
         messageDialogService.ShowBusyButton = !messageDialogService.ShowSaveButton;
-        var (flag, message) = await CategoryService.AddCategoryAsync(CategoryModel);
+        var (flag, message) = await CategoryService.AddCategory(CategoryModel);
         if (flag)
             messageDialogService.messageDialog!.SetDialogValues("success", message);
         else

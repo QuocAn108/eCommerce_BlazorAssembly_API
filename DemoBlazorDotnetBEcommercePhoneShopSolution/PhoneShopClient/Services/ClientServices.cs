@@ -14,11 +14,12 @@ namespace PhoneShopClient.Services
         public Action? ProductAction { get; set; }
         public List<Product> AllProducts { get; set; }
         public List<Product> FeaturedProducts { get; set; }
+        public List<Product> ProductsByCategory { get; set; }
 
 
         //product
 
-        public async Task<ServiceResponse> AddProductAsync(Product product)
+        public async Task<ServiceResponse> AddProduct(Product product)
         {
             var response = await httpClient.PostAsync(ProductBaseUrl, General.GenerateStringContent(General.SerializedObj(product)));
 
@@ -38,11 +39,11 @@ namespace PhoneShopClient.Services
             bool allProducts = false;
             AllProducts = null!;
             FeaturedProducts = null!;
-            await GetAllProductsAsync(featuredProducts);
-            await GetAllProductsAsync(allProducts);
+            await GetAllProducts(featuredProducts);
+            await GetAllProducts(allProducts);
         }
 
-        public async Task GetAllProductsAsync(bool featuredProducts)
+        public async Task GetAllProducts(bool featuredProducts)
         {
             if (featuredProducts && FeaturedProducts is null)
             {
@@ -60,7 +61,13 @@ namespace PhoneShopClient.Services
                 }
             }
 
-
+        }
+        public async Task GetProductsByCategory(int categoryId)
+        {
+            bool featured = false;
+            await GetAllProducts(featured);
+            ProductsByCategory = AllProducts.Where(p => p.CategoryId == categoryId).ToList();
+            ProductAction?.Invoke();
         }
         private async Task<List<Product>> GetProducts(bool featured)
         {
@@ -73,7 +80,7 @@ namespace PhoneShopClient.Services
 
         //category
 
-        public async Task<ServiceResponse> AddCategoryAsync(Category category)
+        public async Task<ServiceResponse> AddCategory(Category category)
         {
             var response = await httpClient.PostAsync(CategoryBaseUrl, General.GenerateStringContent(General.SerializedObj(category)));
 
@@ -88,9 +95,9 @@ namespace PhoneShopClient.Services
             return data;
         }
 
-        public async Task GetAllCategoriesAsync()
+        public async Task GetAllCategories()
         {
-            if (AllCategories != null)
+            if (AllCategories is null)
             {
                 var response = await httpClient.GetAsync($"{CategoryBaseUrl}");
                 var (flag, _) = CheckResponse(response);
@@ -104,7 +111,7 @@ namespace PhoneShopClient.Services
         private async Task ClearAndGetAllCategory()
         {
             AllCategories = null!;
-            await GetAllCategoriesAsync();
+            await GetAllCategories();
         }
         //General method
         private async Task<string> ReadContent(HttpResponseMessage response) => await response.Content.ReadAsStringAsync();
@@ -115,5 +122,7 @@ namespace PhoneShopClient.Services
                 return new ServiceResponse(false, "Error occured. Try again later...");
             else return new ServiceResponse(true, null!);
         }
+
+
     }
 }

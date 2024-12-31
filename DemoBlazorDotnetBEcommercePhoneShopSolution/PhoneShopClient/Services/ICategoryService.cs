@@ -6,9 +6,8 @@ namespace PhoneShopClient.Services
     public interface ICategoryService
     {
         Action? CategoryAction { get; set; }
-        Task<ServiceResponse> AddCategoryAsync(Category category);
-        Task GetAllCategoriesAsync();
-
+        Task<ServiceResponse> AddCategory(Category category);
+        Task GetAllCategories();
         List<Category> AllCategories { get; set; }
     }
 }
