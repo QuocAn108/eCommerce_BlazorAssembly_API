@@ -5,6 +5,9 @@
         <div class="col-lg-2">
             <CategoryPage CategoryClickedEvent="CategoryClickedEvent" DefaultCategoryClickedEvent="DefaultCategoryClickedEvent" />
         </div>
+        <div class="col-lg-10">
+            <ProductListPage />
+        </div>
     </div>
 </div>
 @code {
@@ -19,13 +22,14 @@
         await ProductService.GetProductsByCategory(categoryId);
     }
 
-    async Task DefaultCategoryClickedEvent(){
+    async Task DefaultCategoryClickedEvent()
+    {
         ProductService.ProductsByCategory = null!;
         await LoadData();
     }
     async Task LoadData()
     {
-        bool featured = false;  
+        bool featured = false;
         await ProductService.GetAllProducts(featured);
     }
     public void Dispose()
