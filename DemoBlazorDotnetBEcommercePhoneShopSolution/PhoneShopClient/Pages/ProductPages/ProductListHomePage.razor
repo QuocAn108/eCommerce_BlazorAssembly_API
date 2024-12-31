@@ -6,7 +6,10 @@
             <CategoryPage CategoryClickedEvent="CategoryClickedEvent" DefaultCategoryClickedEvent="DefaultCategoryClickedEvent" />
         </div>
         <div class="col-lg-10">
-            <ProductListPage AllProducts="ProductService.AllProducts" />
+            <div class="card border-0">
+                <div class="card-header border-success-subtle mb-2"></div>
+                <ProductListPage AllProducts="ProductService.ProductsByCategory ?? ProductService.AllProducts" />
+            </div>
         </div>
     </div>
 </div>
