@@ -64,12 +64,11 @@ namespace PhoneShopClient.Services
         }
         public Product GetRandomProduct()
         {
-            if(FeaturedProducts is null) return null!;
+            if (FeaturedProducts is null || !FeaturedProducts.Any())
+                return null!;
+
             Random random = new();
-            int minNum = FeaturedProducts.Min(p => p.Id);
-            int maxNum = FeaturedProducts.Max(p => p.Id)+1;
-            int result = random.Next(minNum, maxNum);
-            return FeaturedProducts.FirstOrDefault(p => p.Id == result)!;
+            return FeaturedProducts.ElementAt(random.Next(FeaturedProducts.Count));
         }
         public async Task GetProductsByCategory(int categoryId)
         {

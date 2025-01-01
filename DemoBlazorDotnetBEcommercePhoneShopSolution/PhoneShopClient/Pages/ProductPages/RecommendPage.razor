@@ -39,14 +39,13 @@
                         <img src="../Resources/greaterthan.png" width="50" height="50" id="styleCursor" />
                     </NextButtonTemplate>
                     <IndicatorsTemplate>
-                        <div class="indicator"></div>
+                        <div class="indicator"> </div>
                     </IndicatorsTemplate>
                 </SfCarousel>
             </div>
         </div>
     </div>
 }
-
 @code {
     List<Product>? FeaturedProducts { get; set; } = new();
     protected async override Task OnInitializedAsync()
@@ -57,7 +56,7 @@
         ProductService.ProductAction += StateHasChanged;
         Populate();
     }
-    public void Dispost()
+    public void Dispose()
     {
         ProductService.ProductAction -= StateHasChanged;
     }
