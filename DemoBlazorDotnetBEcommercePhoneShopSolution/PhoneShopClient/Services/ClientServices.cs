@@ -62,6 +62,14 @@ namespace PhoneShopClient.Services
             }
 
         }
+        public Product GetRandomProduct()
+        {
+            if (FeaturedProducts is null || !FeaturedProducts.Any())
+                return null!;
+
+            Random random = new();
+            return FeaturedProducts.ElementAt(random.Next(FeaturedProducts.Count));
+        }
         public async Task GetProductsByCategory(int categoryId)
         {
             bool featured = false;
@@ -122,7 +130,6 @@ namespace PhoneShopClient.Services
                 return new ServiceResponse(false, "Error occured. Try again later...");
             else return new ServiceResponse(true, null!);
         }
-
-
+       
     }
 }
