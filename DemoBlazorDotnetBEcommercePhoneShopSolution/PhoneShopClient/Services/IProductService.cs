@@ -12,5 +12,6 @@ namespace PhoneShopClient.Services
         List<Product> FeaturedProducts { get; set; }
         List<Product> ProductsByCategory { get; set; }
         Task GetProductsByCategory(int categoryId);
+        Product GetRandomProduct();
     }
 }

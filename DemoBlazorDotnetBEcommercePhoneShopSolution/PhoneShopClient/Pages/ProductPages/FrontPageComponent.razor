@@ -30,7 +30,7 @@
                                                         </span>
                                                     </p>
                                                 </div>
-                                                <p class="text-muted fs-5 w-75" style="text-align:justify-all; font-family:Cambria">@(GetDescription(product.Description!))</p>
+                                                <p class="text-muted fs-5 w-75" style="text-align:justify-all; font-family:Cambria">@(General.GetDescription(product.Description!))</p>
                                             </div>
                                             <div class="hstack gap-1 d-flex justify-content-center">
                                                 <button class="btn btn-secondary fw-bold" id="styleButton"><i class="fa fa-list"></i>Details</button>
@@ -84,13 +84,7 @@
         int productionDateAfterUploaded = (DateTime.Now - dateUploaded).Days;
         return productionDateAfterUploaded <= maxDays ? "New" : null!;
     }
-    string GetDescription(string description)
-    {
-        string appendDots = "...";
-        int maxLength = 100;
-        int descriptionLength = description.Length;
-        return descriptionLength > maxLength ? $"{description.Substring(0, 100)}{appendDots}" : description;
-    }
+
     public void Dispose()
     {
         ProductService.ProductAction -= StateHasChanged;

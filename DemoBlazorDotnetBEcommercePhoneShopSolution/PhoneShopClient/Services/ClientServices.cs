@@ -62,6 +62,15 @@ namespace PhoneShopClient.Services
             }
 
         }
+        public Product GetRandomProduct()
+        {
+            if(FeaturedProducts is null) return null!;
+            Random random = new();
+            int minNum = FeaturedProducts.Min(p => p.Id);
+            int maxNum = FeaturedProducts.Max(p => p.Id)+1;
+            int result = random.Next(minNum, maxNum);
+            return FeaturedProducts.FirstOrDefault(p => p.Id == result)!;
+        }
         public async Task GetProductsByCategory(int categoryId)
         {
             bool featured = false;
@@ -122,7 +131,6 @@ namespace PhoneShopClient.Services
                 return new ServiceResponse(false, "Error occured. Try again later...");
             else return new ServiceResponse(true, null!);
         }
-
-
+       
     }
 }
