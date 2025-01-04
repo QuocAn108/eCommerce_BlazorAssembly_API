@@ -5,7 +5,14 @@ namespace PhoneShopClient.Services
 {
     public interface IProductService
     {
-        Task<ServiceResponse> AddProductAsync(Product product);
-        Task<List<Product>> GetAllProductsAsync(bool featuredProducts);
+        Action? ProductAction { get; set; }
+        Task<ServiceResponse> AddProduct(Product product);
+        Task GetAllProducts(bool featuredProducts);
+        List<Product> AllProducts { get; set; }
+        List<Product> FeaturedProducts { get; set; }
+        List<Product> ProductsByCategory { get; set; }
+        Task GetProductsByCategory(int categoryId);
+        Product GetRandomProduct();
+        bool IsVisible { get; set; }
     }
 }

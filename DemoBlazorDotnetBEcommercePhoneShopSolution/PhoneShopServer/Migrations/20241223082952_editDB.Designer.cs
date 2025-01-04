@@ -12,13 +12,9 @@ using PhoneShopServer.Data;
 namespace PhoneShopServer.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-<<<<<<<< HEAD:DemoBlazorDotnetBEcommercePhoneShopSolution/PhoneShopServer/Migrations/20241223082952_editDB.Designer.cs
     [Migration("20241223082952_editDB")]
     partial class editDB
-========
-    [Migration("20241205161713_DBInit")]
-    partial class DBInit
->>>>>>>> ccb03376e76baa3834c31969cac71878f0143535:DemoBlazorDotnetBEcommercePhoneShopSolution/PhoneShopServer/Migrations/20241205161713_DBInit.Designer.cs
+
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -11,5 +11,10 @@
 @using PhoneShopClient.Services
 @using PhoneShopShareLibrary.Models
 @using Syncfusion.Blazor.Navigations
+@using PhoneShopClient.Pages.OtherPages
+@using PhoneShopClient.Pages.ProductPages
+@using PhoneShopClient.Pages.CategoriesPages
 @inject IJSRuntime js
-@inject IProductService ClientService
+@inject IProductService ProductService
+@inject ICategoryService CategoryService
+@inject MessageDialogService messageDialogService
