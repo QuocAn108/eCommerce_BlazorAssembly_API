@@ -13,5 +13,6 @@ namespace PhoneShopClient.Services
         List<Product> ProductsByCategory { get; set; }
         Task GetProductsByCategory(int categoryId);
         Product GetRandomProduct();
+        bool IsVisible { get; set; }
     }
 }
