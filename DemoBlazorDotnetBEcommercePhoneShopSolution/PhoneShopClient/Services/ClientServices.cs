@@ -1,14 +1,15 @@
-﻿using PhoneShopShareLibrary.Models;
+﻿using PhoneShopShareLibrary.DTOs;
+using PhoneShopShareLibrary.Models;
 using PhoneShopShareLibrary.Responses;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PhoneShopClient.Services
 {
-    public class ClientServices(HttpClient httpClient) : IProductService, ICategoryService
+    public class ClientServices(HttpClient httpClient) : IProductService, ICategoryService, IUserAccountService
     {
         private const string ProductBaseUrl = "api/Product";
         private const string CategoryBaseUrl = "api/Category";
-
+        private const string AuthenticationBaseUrl = "api/Account";
         public Action? CategoryAction { get; set; }
         public List<Category> AllCategories { get; set; }
         public Action? ProductAction { get; set; }
@@ -136,5 +137,22 @@ namespace PhoneShopClient.Services
             else return new ServiceResponse(true, null!);
         }
 
+        //user account/Authentication
+        public async Task<ServiceResponse> Register(UserDTO model)
+        {
+            var response = await httpClient.PostAsync($"{AuthenticationBaseUrl}/register", General.GenerateStringContent(General.SerializedObj(model)));
+            var result = CheckResponse(response);
+            if (!result.flag) return result;
+            var apiResponse = await ReadContent(response);
+            return General.DeserializeJsonString<ServiceResponse>(apiResponse);
+        }
+
+        public async Task<LoginResponse> Login(LoginDTO model)
+        {
+            var response = await httpClient.PostAsync($"{AuthenticationBaseUrl}/login", General.GenerateStringContent(General.SerializedObj(model)));
+            if (!response.IsSuccessStatusCode) return new LoginResponse(false, "Error occured", null!, null!);
+            var apiResponse = await ReadContent(response);
+            return General.DeserializeJsonString<LoginResponse>(apiResponse);
+        }
     }
 }
