@@ -1,0 +1,68 @@
+﻿@page "/identity/account/register"
+@implements IDisposable
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <EditForm Enhance Model="user" OnValidSubmit="HandleRegistation">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="card">
+                    <div class="card-header">Fill this form to Register</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <InputText class="form-control" @bind-Value="user.Name"></InputText>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label">Email</label>
+                            <InputText class="form-control" @bind-Value="user.Email"></InputText>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label">Password</label>
+                            <input class="form-control" @bind="user.Password" Type="password"></input>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input class="form-control" @bind="user.ConfirmPassword" Type="password"></input>
+                        </div>
+                        <div class="form-group mt-3">
+                            @if (messageDialogService.ShowSaveButton)
+                            {
+                                <button class="btn btn-outline-primary float-end" type="submit">Register</button>
+                            }
+                            <BusyButtonComponent ShowBusyButton="@messageDialogService.ShowBusyButton"></BusyButtonComponent>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+<MessageDialog @ref="messageDialogService.messageDialog"></MessageDialog>
+@code {
+    UserDTO user = new UserDTO();
+    protected override async Task OnInitializedAsync()
+    {
+        messageDialogService.Action += StateHasChanged;
+    }
+    async Task HandleRegistation()
+    {
+        messageDialogService.ShowSaveButton = false;
+        messageDialogService.ShowBusyButton = !messageDialogService.ShowSaveButton;
+        var (flag, message) = await UserAccountService.Register(user);
+        if (flag)
+        {
+            messageDialogService.messageDialog!.SetDialogValues("Success", message);
+            user = new();
+        }
+        else
+        {
+            messageDialogService.messageDialog!.SetDialogValues("Danger", message);
+        }
+        messageDialogService.SetMessageDialog();
+    }
+    public void Dispose()
+    {
+        messageDialogService.Action -= StateHasChanged;
+    }
+}

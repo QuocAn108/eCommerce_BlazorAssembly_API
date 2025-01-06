@@ -9,12 +9,19 @@
 @using PhoneShopClient
 @using PhoneShopClient.Layout
 @using PhoneShopClient.Services
+
 @using PhoneShopShareLibrary.Models
+@using PhoneShopShareLibrary.DTOs
+
 @using Syncfusion.Blazor.Navigations
+
 @using PhoneShopClient.Pages.OtherPages
 @using PhoneShopClient.Pages.ProductPages
 @using PhoneShopClient.Pages.CategoriesPages
+
 @inject IJSRuntime js
 @inject IProductService ProductService
 @inject ICategoryService CategoryService
+@inject IUserAccountService UserAccountService
+
 @inject MessageDialogService messageDialogService
