@@ -40,7 +40,7 @@
 </div>
 <MessageDialog @ref="messageDialogService.messageDialog"></MessageDialog>
 @code {
-    UserDTO user = new UserDTO();
+    UserDTO user = new();
     protected override async Task OnInitializedAsync()
     {
         messageDialogService.Action += StateHasChanged;

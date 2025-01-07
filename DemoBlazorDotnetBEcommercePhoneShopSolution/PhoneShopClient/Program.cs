@@ -10,12 +10,12 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddScoped<IProductService,ClientServices>();
+builder.Services.AddScoped<IProductService, ClientServices>();
 builder.Services.AddScoped<ICategoryService, ClientServices>();
 builder.Services.AddScoped<IUserAccountService, ClientServices>();
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<MessageDialogService>();
 builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 builder.Services.AddSyncfusionBlazor();
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzYxMzc4OUAzMjM3MmUzMDJlMzBkdDhCWlhmd05RbWE0NG5aSkNxKy9HNFZFYWN3RGJLSVVydko4Q2dqaFp3PQ==");
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF1cX2hIYVRpR2Nbek54flBPal5SVAciSV9jS3tTd0VkWXpfeXBUQWVVVw==");
 await builder.Build().RunAsync();
