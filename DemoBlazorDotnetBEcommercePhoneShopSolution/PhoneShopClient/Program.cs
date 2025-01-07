@@ -1,3 +1,5 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using PhoneShopClient;
@@ -15,7 +17,9 @@ builder.Services.AddScoped<ICategoryService, ClientServices>();
 builder.Services.AddScoped<IUserAccountService, ClientServices>();
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<MessageDialogService>();
-builder.Services.AddScoped<CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddAuthorizationCore();
 builder.Services.AddSyncfusionBlazor();
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NDaF1cX2hIYVRpR2Nbek54flBPal5SVAciSV9jS3tTd0VkWXpfeXBUQWVVVw==");
+builder.Services.AddBlazoredLocalStorage();
 await builder.Build().RunAsync();

@@ -52,12 +52,12 @@
         var (flag, message) = await UserAccountService.Register(user);
         if (flag)
         {
-            messageDialogService.messageDialog!.SetDialogValues("Success", message);
+            messageDialogService.messageDialog!.SetDialogValues("success", message);
             user = new();
         }
         else
         {
-            messageDialogService.messageDialog!.SetDialogValues("Danger", message);
+            messageDialogService.messageDialog!.SetDialogValues("danger", message);
         }
         messageDialogService.SetMessageDialog();
     }

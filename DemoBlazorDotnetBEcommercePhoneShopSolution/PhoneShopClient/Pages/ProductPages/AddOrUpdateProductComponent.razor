@@ -68,7 +68,6 @@
     protected override async Task OnInitializedAsync()
     {
         await CategoryService.GetAllCategories();
-        Console.WriteLine(CategoryService.AllCategories.Count);
         CategoryService.CategoryAction += StateHasChanged;
         messageDialogService.Action += StateHasChanged;
     }
