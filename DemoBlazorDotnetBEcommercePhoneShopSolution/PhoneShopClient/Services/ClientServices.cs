@@ -1,11 +1,12 @@
-﻿using PhoneShopShareLibrary.DTOs;
+﻿using PhoneShopClient.Authentication;
+using PhoneShopShareLibrary.DTOs;
 using PhoneShopShareLibrary.Models;
 using PhoneShopShareLibrary.Responses;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PhoneShopClient.Services
 {
-    public class ClientServices(HttpClient httpClient) : IProductService, ICategoryService, IUserAccountService
+    public class ClientServices(HttpClient httpClient, AuthenticationService authenticationService) : IProductService, ICategoryService, IUserAccountService
     {
         private const string ProductBaseUrl = "api/Product";
         private const string CategoryBaseUrl = "api/Category";
@@ -23,7 +24,9 @@ namespace PhoneShopClient.Services
 
         public async Task<ServiceResponse> AddProduct(Product product)
         {
-            var response = await httpClient.PostAsync(ProductBaseUrl, General.GenerateStringContent(General.SerializedObj(product)));
+            await authenticationService.GetUserDetails();
+            var privateHttpClient = await authenticationService.AddHeaderToHttpClient();
+            var response = await privateHttpClient.PostAsync(ProductBaseUrl, General.GenerateStringContent(General.SerializedObj(product)));
 
             var result = CheckResponse(response);
             if (!result.flag) return result;
@@ -96,7 +99,9 @@ namespace PhoneShopClient.Services
 
         public async Task<ServiceResponse> AddCategory(Category category)
         {
-            var response = await httpClient.PostAsync(CategoryBaseUrl, General.GenerateStringContent(General.SerializedObj(category)));
+            await authenticationService.GetUserDetails();
+            var privateHttpClient = await authenticationService.AddHeaderToHttpClient();
+            var response = await privateHttpClient.PostAsync(CategoryBaseUrl, General.GenerateStringContent(General.SerializedObj(category)));
 
             var result = CheckResponse(response);
             if (!result.flag) return result;
